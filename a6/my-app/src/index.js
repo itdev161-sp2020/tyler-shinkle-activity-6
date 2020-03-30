@@ -2,30 +2,50 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+//https://reactjs.org/tutorial/tutorial.html#setup-option-2-local-development-environment
+
 //pass props from parente -> children
 
-class Square extends React.Component {
-    render() {
-      return (
-        //render a button with the value of each squares
-        //value prop, <Square value={i}
-        <button className="square">
-          {this.props.value}
-        </button>
-      );
-    }
-  }
+//a function component
+ function Square(props){
+    return(
+     <button className="square" onClick={props.onClick}>
+         {props.value}
+     </button>
+    );
+ }
   
   class Board extends React.Component {
+    constructor(props){
+        super(props);
+        this.state={
+            //an array of 9 null values 
+            squares:Array(9).fill(null),
+            xIsNext: true,
+        };
+    }
+
+    handleClick(i){
+        //create copy of the squares array with slice()
+        const squares = this.state.squares.slice();
+        squares[i]=this.state.xIsNext?'X':'O';
+        this.setState({
+            //flip xIsNext
+            squares:squares,
+            xIsNext:!this.state.xIsNext
+        });
+    }
     renderSquare(i) {
       //set the value prop to whatever 'i' value is passed
       //this is a way we can pass props from our Board component 
       //to our Square component
-      return <Square value={i}/>;
+      return <Square 
+                value={this.state.squares[i]}
+                onClick={()=>this.handleClick(i)}/>
     }
   
     render() {
-      const status = 'Next player: X';
+      const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
   
       return (
         <div>
