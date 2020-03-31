@@ -24,6 +24,8 @@ import './index.css';
       //set the value prop to whatever 'i' value is passed
       //this is a way we can pass props from our Board component 
       //to our Square component
+
+      //set the onClick to refer to the boards prop (in tag) handler
       return (
             <Square 
                 value={this.props.squares[i]}
@@ -69,7 +71,8 @@ import './index.css';
 
     
     handleClick(i){
-      //set history to hte array of objects in state
+      //set history to hte array of objects in state, slice 
+      //from the beginning to the stepNumber + 1
       const history = this.state.history.slice(0,this.state.stepNumber + 1);
       //set current to the last item in our history array
       const current = history[history.length-1];
@@ -96,6 +99,7 @@ import './index.css';
     jumpTo(step){
       this.setState({
         stepNumber: step, 
+        //if even , x is next...
         xIsNext: (step%2) === 0,
       });
     }
